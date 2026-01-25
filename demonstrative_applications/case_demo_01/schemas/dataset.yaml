@@ -1,0 +1,45 @@
+mcs_version: '0.1'
+created_utc: '2026-01-25T17:06:59.513657+00:00'
+dataset:
+  id: amp_case_study_v1
+  name: Antimicrobial Peptide (AMP) case-study subset
+  description: Binary classification dataset derived from a pivoted peptide table.
+    The target label is 'Antimicrobial' (0/1). A stratified random subset of up to
+    10000 sequences is selected for practical experimentation.
+  domain: peptides
+  task: binary_classification
+  features:
+  - name: sequence
+    type: string
+  target:
+    name: Antimicrobial
+    type: int
+    labels:
+      0: non_AMP
+      1: AMP
+  source:
+    type: local_file
+    path: ../../raw_data_use_cases/raw_data_peptides.csv
+  sampling:
+    method: stratified_random
+    max_n: 10000
+    seed: 42
+    notes: Sampling performed after removing empty sequences and exact duplicate sequences.
+  artifacts:
+    raw_subset_csv: amp_raw_10k.csv
+    raw_subset_sha256: 1b509a0a745a14602c1d2d6738327c5995d79ac6ceb26c2486caf69edccee2b0
+  statistics:
+    n_total: 10000
+    label_counts:
+      0: 6021
+      1: 3979
+    seq_length:
+      min: 2
+      max: 150
+      mean: 35.1513
+      median: 23.0
+  license: MIT
+  citation: TBD
+  contact:
+    owner: KrenAI Lab
+    email: krenai@umag.cl
