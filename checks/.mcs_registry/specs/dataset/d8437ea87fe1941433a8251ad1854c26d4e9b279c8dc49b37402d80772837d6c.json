@@ -1,0 +1,57 @@
+{
+  "created_by": "YourLab",
+  "description": "Small illustrative dataset for MCS case studies.",
+  "domain": "protein",
+  "filters": [
+    {
+      "description": "Keep typical enzyme lengths.",
+      "field": "sequence_length",
+      "op": "between",
+      "value": [
+        30,
+        500
+      ]
+    },
+    {
+      "field": "has_noncanonical",
+      "op": "eq",
+      "value": false
+    }
+  ],
+  "id_field": "id",
+  "labels": [
+    {
+      "description": "Assay-derived fitness proxy.",
+      "dtype": "float",
+      "name": "fitness"
+    }
+  ],
+  "mcs_version": "0.1.0",
+  "metadata": [
+    {
+      "dtype": "str",
+      "name": "organism",
+      "required": false
+    }
+  ],
+  "name": "toy_protein_fitness_v1",
+  "output": {
+    "format": "parquet",
+    "path": "data/curated/toy_protein_fitness_v1.parquet"
+  },
+  "redundancy_control": {
+    "method": "sequence_identity",
+    "parameters": {},
+    "threshold": 0.9,
+    "tool": "mmseqs2"
+  },
+  "sequence_field": "sequence",
+  "sources": [
+    {
+      "accessed": "2026-01-10",
+      "name": "UniProt",
+      "type": "database",
+      "version": "2025_12"
+    }
+  ]
+}

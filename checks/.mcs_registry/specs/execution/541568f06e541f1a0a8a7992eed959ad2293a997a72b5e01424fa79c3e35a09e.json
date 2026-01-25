@@ -1,0 +1,27 @@
+{
+  "container": {
+    "type": "none"
+  },
+  "dependencies": {
+    "reference": "env/pip_freeze.txt",
+    "strategy": "pip_freeze"
+  },
+  "determinism_flags": {
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true,
+    "numpy_seed": 42,
+    "python_hash_seed": 0,
+    "torch_deterministic": true
+  },
+  "hardware": {
+    "accelerator": "none",
+    "cpu": "Intel(R) Core(TM) i9-10980HK",
+    "notes": "Local development machine.",
+    "ram_gb": 64.0
+  },
+  "mcs_version": "0.1.0",
+  "name": "dev_linux_cpu_py312_v1",
+  "notes": "Execution profile for reproducible local runs (CPU).",
+  "platform": "Linux-x86_64",
+  "python_version": "3.12"
+}

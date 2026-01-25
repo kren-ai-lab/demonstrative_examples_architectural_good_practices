@@ -1,0 +1,35 @@
+{
+  "artifacts": [
+    {
+      "format": "json",
+      "kind": "metrics",
+      "path": "artifacts/metrics/cls.json"
+    },
+    {
+      "format": "parquet",
+      "kind": "predictions",
+      "path": "artifacts/predictions/cls.parquet"
+    }
+  ],
+  "created_at_utc": "2026-01-25T12:06:58+00:00",
+  "dataset_fingerprint": "d8437ea87fe1941433a8251ad1854c26d4e9b279c8dc49b37402d80772837d6c",
+  "dataset_name": "toy_protein_fitness_v1",
+  "embedding_fingerprint": "67f616fde142f7c5df0765e96aa792673bd778580e955bbb9df09be094407e89",
+  "embedding_name": "esm2_t33_last_mean_fp32_cpu_v1",
+  "execution_fingerprint": "c4e4999cd3d8f97d9b51d61f7fa5d904e84ee3bd252037fe0a52f18aea4cbe5a",
+  "execution_name": "prod_linux_cuda_gpu_py312_v1",
+  "extra": {},
+  "mcs_version": "0.1.0",
+  "metric_summary": {
+    "metrics": {
+      "roc_auc": 0.91
+    },
+    "split": "test"
+  },
+  "notes": "Case study: classification baseline.",
+  "run_id": "de6d37c170d33814ccb536dd015d94435b779d517a5f02793aec1a8c969ced01",
+  "split_fingerprint": "78229a323ce73e69236771f52c537d716525f15f0b77bc1f48ae637f79d7ca5c",
+  "split_name": "cluster_aware_seqid30_v1",
+  "train_fingerprint": "638392926fb0b4f0e408d2d663ade500840e4235b6d8f9b5c64f1d038d1145af",
+  "train_name": "logreg_classification_baseline_v1"
+}
