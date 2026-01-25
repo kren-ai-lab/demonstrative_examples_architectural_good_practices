@@ -1,0 +1,31 @@
+mcs_version: "0.1.0"
+
+name: "esm2_t33_last_mean_fp32_cpu_v1"
+model_id: "esm2_t33_650M_UR50D"
+provider: "facebook"
+
+tokenization:
+  max_length: 1024
+  truncation: true
+  padding: "none"
+  add_special_tokens: true
+
+layer: "last"
+pooling: "mean"
+
+dtype: "fp32"
+device: "cpu"
+batch_size: 8
+seed: 42
+
+parameters:
+  normalize: false
+  l2_normalize: false
+
+# Optional linkage for traceability (can be filled after computing dataset fingerprint)
+input_dataset_fingerprint: null
+
+output:
+  format: "npz"
+  path: "artifacts/embeddings/esm2_t33_last_mean_fp32_cpu_v1.npz"
+  checksum: null

@@ -1,6 +1,6 @@
 mcs_version: "0.1.0"
 
-name: "dev_linux_cpu_py312_v1"
+name: "prod_linux_cuda_gpu_py312_v1"
 python_version: "3.12"
 platform: "Linux-x86_64"
 git_commit: null
@@ -8,15 +8,15 @@ working_directory: null
 
 dependencies:
   strategy: "pip_freeze"
-  reference: "env/pip_freeze.txt"
+  reference: "env/pip_freeze_gpu.txt"
   checksum: null
 
 hardware:
-  cpu: "Intel(R) Core(TM) i9-10980HK"
-  gpu: null
-  accelerator: "none"
-  ram_gb: 64
-  notes: "Local development machine."
+  cpu: "Intel(R) Xeon(R) Gold 6230"
+  gpu: "NVIDIA A100-SXM4-40GB"
+  accelerator: "cuda"
+  ram_gb: 256
+  notes: "HPC/accelerator node used for embedding extraction and training."
 
 container:
   type: "none"
@@ -26,8 +26,9 @@ container:
 determinism_flags:
   python_hash_seed: 0
   numpy_seed: 42
+  torch_seed: 42
   torch_deterministic: true
   cudnn_deterministic: true
   cudnn_benchmark: false
 
-notes: "Execution profile for reproducible local runs (CPU)."
+notes: "GPU execution profile for large-scale embedding extraction and ML training."

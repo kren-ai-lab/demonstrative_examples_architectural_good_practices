@@ -1,0 +1,50 @@
+mcs_version: "0.1.0"
+
+name: "rf_regression_baseline_v1"
+task: "regression"
+
+model_family: "rf"
+model_id: "RandomForestRegressor"
+
+hyperparams:
+  n_estimators: 500
+  max_depth: null
+  min_samples_split: 2
+  min_samples_leaf: 1
+  bootstrap: true
+  n_jobs: 8
+  random_state: 42
+
+metrics:
+  - "rmse"
+  - "mae"
+  - "r2"
+
+seed: 42
+
+early_stopping: null
+
+cross_validation:
+  enabled: false
+  folds: 5
+  strategy: "kfold"
+  group_field: null
+  parameters: {}
+
+calibration:
+  enabled: false
+  method: "platt"
+  parameters: {}
+
+parameters:
+  feature_space: "embedding"
+  note: "Baseline supervised regressor; framework-agnostic declaration."
+
+input_split_fingerprint: null
+input_embedding_fingerprint: null
+
+output:
+  model_path: "artifacts/models/rf_regression_baseline_v1.joblib"
+  metrics_path: "artifacts/metrics/rf_regression_baseline_v1.json"
+  predictions_path: "artifacts/predictions/rf_regression_baseline_v1.parquet"
+  checkpoint_dir: null
