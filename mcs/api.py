@@ -11,16 +11,16 @@ from mcs.schemas.train import TrainSpec
 from mcs.schemas.execution import ExecutionSpec
 
 from mcs.validation.api import (
+    validate_all_5specs,
     format_issues,
     sort_issues,
 )
-from mcs.validation.dataset_validator import validate_dataset_spec
-from mcs.validation.split_validator import validate_split_spec
-from mcs.validation.consistency import validate_dataset_split_consistency
 
 from mcs.provenance import ProvenanceRecord, ArtifactRef, MetricSummary
 from mcs.registry import LocalRegistry
 
+from typing import List
+from mcs.validation.types import ValidationIssue
 
 def _load_yaml(path: str | Path) -> Dict[str, Any]:
     p = Path(path)
@@ -75,19 +75,13 @@ def validate_specs(
     train: TrainSpec,
     execution: ExecutionSpec,
     strict: bool = True,
-) -> Sequence[Any]:
+) -> List[ValidationIssue]:
     """
-    Validate currently implemented checks (dataset, split, dataset↔split consistency).
-
-    Returns
-    -------
-    issues : list[ValidationIssue]
+    Validate 5-spec pack:
+      - per-spec semantic validations
+      - unified cross-spec consistency
     """
-    issues = []
-    issues += validate_dataset_spec(dataset)
-    issues += validate_split_spec(split)
-    issues += validate_dataset_split_consistency(dataset, split)
-
+    issues = validate_all_5specs(dataset, split, embedding, train, execution, strict=False)
     issues = sort_issues(issues)
 
     if strict:
@@ -121,7 +115,7 @@ def create_record(
         metric_summary=metric_summary,
         notes=notes,
         salt=salt,
-        extra=extra,
+        extra=extra or {},
     )
 
 
@@ -165,6 +159,8 @@ def run_pack(
     artifacts: Optional[Sequence[ArtifactRef]] = None,
     metric_summary: Optional[MetricSummary] = None,
     notes: Optional[str] = None,
+    salt: Optional[str] = None,
+    extra: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """
     One-shot helper for notebooks: load → validate → record → register.
@@ -191,6 +187,8 @@ def run_pack(
         artifacts=artifacts,
         metric_summary=metric_summary,
         notes=notes,
+        salt=salt,
+        extra=extra,
     )
 
     registry_paths = register_run(

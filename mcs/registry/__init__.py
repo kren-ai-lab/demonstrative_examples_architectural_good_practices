@@ -1,3 +1,3 @@
-from .local import LocalRegistry
+from mcs.registry.local import LocalRegistry
 
 __all__ = ["LocalRegistry"]
