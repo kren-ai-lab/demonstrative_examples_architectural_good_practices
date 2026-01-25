@@ -1,0 +1,21 @@
+mcs_version: "0.1.0"
+split_name: "cluster_aware_seqid30_v1"
+protocol: "cluster_aware"
+ratios:
+  train: 0.8
+  val: 0.1
+  test: 0.1
+seed: 42
+identity:
+  measure: "sequence_identity"
+  threshold: 0.3
+  tool: "mmseqs2"
+leakage_checks:
+  - type: "sequence_identity"
+    scope: "train_test"
+    threshold: 0.3
+    description: "Audit homology overlap across train/test."
+  - type: "exact_duplicate"
+    scope: "all"
+    description: "No exact duplicates across any partitions."
+notes: "Illustrative split used in MCS paper notebooks."

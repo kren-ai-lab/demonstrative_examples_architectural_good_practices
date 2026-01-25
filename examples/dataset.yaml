@@ -1,0 +1,35 @@
+mcs_version: "0.1.0"
+name: "toy_protein_fitness_v1"
+description: "Small illustrative dataset for MCS case studies."
+domain: "protein"
+created_by: "YourLab"
+sources:
+  - type: "database"
+    name: "UniProt"
+    version: "2025_12"
+    accessed: 2026-01-10
+filters:
+  - field: "sequence_length"
+    op: "between"
+    value: [30, 500]
+    description: "Keep typical enzyme lengths."
+  - field: "has_noncanonical"
+    op: "eq"
+    value: false
+redundancy_control:
+  method: "sequence_identity"
+  threshold: 0.9
+  tool: "mmseqs2"
+labels:
+  - name: "fitness"
+    dtype: "float"
+    description: "Assay-derived fitness proxy."
+metadata:
+  - name: "organism"
+    dtype: "str"
+    required: false
+sequence_field: "sequence"
+id_field: "id"
+output:
+  format: "parquet"
+  path: "data/curated/toy_protein_fitness_v1.parquet"
