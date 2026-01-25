@@ -1,0 +1,31 @@
+{
+  "identity": {
+    "measure": "sequence_identity",
+    "parameters": {},
+    "threshold": 0.3,
+    "tool": "mmseqs2"
+  },
+  "leakage_checks": [
+    {
+      "description": "Audit homology overlap across train/test.",
+      "scope": "train_test",
+      "threshold": 0.3,
+      "type": "sequence_identity"
+    },
+    {
+      "description": "No exact duplicates across any partitions.",
+      "scope": "all",
+      "type": "exact_duplicate"
+    }
+  ],
+  "mcs_version": "0.1.0",
+  "notes": "Illustrative split used in MCS paper notebooks.",
+  "protocol": "cluster_aware",
+  "ratios": {
+    "test": 0.1,
+    "train": 0.8,
+    "val": 0.1
+  },
+  "seed": 42,
+  "split_name": "cluster_aware_seqid30_v1"
+}

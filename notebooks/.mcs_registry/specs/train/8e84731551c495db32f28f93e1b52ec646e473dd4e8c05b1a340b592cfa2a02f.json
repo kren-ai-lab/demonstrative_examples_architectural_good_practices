@@ -1,0 +1,42 @@
+{
+  "calibration": {
+    "enabled": false,
+    "method": "platt",
+    "parameters": {}
+  },
+  "cross_validation": {
+    "enabled": false,
+    "folds": 5,
+    "parameters": {},
+    "strategy": "kfold"
+  },
+  "hyperparams": {
+    "bootstrap": true,
+    "max_depth": null,
+    "min_samples_leaf": 1,
+    "min_samples_split": 2,
+    "n_estimators": 500,
+    "n_jobs": 8,
+    "random_state": 42
+  },
+  "mcs_version": "0.1.0",
+  "metrics": [
+    "rmse",
+    "mae",
+    "r2"
+  ],
+  "model_family": "rf",
+  "model_id": "RandomForestRegressor",
+  "name": "rf_regression_baseline_v1",
+  "output": {
+    "metrics_path": "artifacts/metrics/rf_regression_baseline_v1.json",
+    "model_path": "artifacts/models/rf_regression_baseline_v1.joblib",
+    "predictions_path": "artifacts/predictions/rf_regression_baseline_v1.parquet"
+  },
+  "parameters": {
+    "feature_space": "embedding",
+    "note": "Baseline supervised regressor; framework-agnostic declaration."
+  },
+  "seed": 42,
+  "task": "regression"
+}

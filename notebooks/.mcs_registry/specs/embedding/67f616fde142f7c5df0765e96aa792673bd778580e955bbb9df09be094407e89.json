@@ -1,0 +1,26 @@
+{
+  "batch_size": 8,
+  "device": "cpu",
+  "dtype": "fp32",
+  "layer": "last",
+  "mcs_version": "0.1.0",
+  "model_id": "esm2_t33_650M_UR50D",
+  "name": "esm2_t33_last_mean_fp32_cpu_v1",
+  "output": {
+    "format": "npz",
+    "path": "artifacts/embeddings/esm2_t33_last_mean_fp32_cpu_v1.npz"
+  },
+  "parameters": {
+    "l2_normalize": false,
+    "normalize": false
+  },
+  "pooling": "mean",
+  "provider": "facebook",
+  "seed": 42,
+  "tokenization": {
+    "add_special_tokens": true,
+    "max_length": 1024,
+    "padding": "none",
+    "truncation": true
+  }
+}

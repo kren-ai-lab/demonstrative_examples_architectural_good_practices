@@ -1,0 +1,42 @@
+{
+  "calibration": {
+    "enabled": true,
+    "method": "temperature",
+    "parameters": {}
+  },
+  "cross_validation": {
+    "enabled": false,
+    "folds": 5,
+    "parameters": {},
+    "strategy": "stratified_kfold"
+  },
+  "hyperparams": {
+    "C": 1.0,
+    "class_weight": "balanced",
+    "max_iter": 2000,
+    "penalty": "l2",
+    "random_state": 42,
+    "solver": "lbfgs"
+  },
+  "mcs_version": "0.1.0",
+  "metrics": [
+    "accuracy",
+    "f1",
+    "roc_auc",
+    "average_precision"
+  ],
+  "model_family": "linear",
+  "model_id": "LogisticRegression",
+  "name": "logreg_classification_baseline_v1",
+  "output": {
+    "metrics_path": "artifacts/metrics/logreg_classification_baseline_v1.json",
+    "model_path": "artifacts/models/logreg_classification_baseline_v1.joblib",
+    "predictions_path": "artifacts/predictions/logreg_classification_baseline_v1.parquet"
+  },
+  "parameters": {
+    "feature_space": "embedding",
+    "note": "Baseline linear classifier; calibration enabled for decision-ready probabilities."
+  },
+  "seed": 42,
+  "task": "classification"
+}
