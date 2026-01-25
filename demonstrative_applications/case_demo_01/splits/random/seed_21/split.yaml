@@ -1,0 +1,37 @@
+mcs_version: '0.1'
+created_utc: '2026-01-25T17:29:27.482036+00:00'
+split:
+  id: amp_case_study_v1__random__seed_21
+  dataset_id: amp_case_study_v1
+  strategy: random
+  stratified: false
+  seed: 21
+  target: Antimicrobial
+  fractions:
+    train: 0.8
+    val: 0.1
+    test: 0.1
+  artifacts:
+    train_idx: train_idx.npy
+    val_idx: val_idx.npy
+    test_idx: test_idx.npy
+    train_csv: train.csv
+    val_csv: val.csv
+    test_csv: test.csv
+  statistics:
+    n_total: 10000
+    n_train: 8000
+    n_val: 1000
+    n_test: 1000
+    label_counts:
+      train:
+        0: 4819
+        1: 3181
+      val:
+        0: 584
+        1: 416
+      test:
+        0: 618
+        1: 382
+  notes: Split pool member for fragility analysis. Paired seeds across random and
+    stratified variants.
