@@ -1,0 +1,39 @@
+mcs_version: '0.1'
+created_utc: '2026-01-25T21:50:34.341730+00:00'
+split:
+  id: cluster_aware_k200_seed_10
+  strategy: cluster_aware_k200
+  seed: 10
+  sizes:
+    n_total: 10000
+    train: 6906
+    val: 1008
+    test: 2086
+    train_frac: 0.6906
+    val_frac: 0.1008
+    test_frac: 0.2086
+  clusters:
+    n_clusters_total: 200
+    train_clusters: 131
+    val_clusters: 30
+    test_clusters: 39
+dataset:
+  id: amp_case_study_v1
+  raw_csv: ../../demonstrative_applications/case_demo_01/dataset/amp_raw_10k.csv
+  raw_sha256: 1b509a0a745a14602c1d2d6738327c5995d79ac6ceb26c2486caf69edccee2b0
+  labels_source: ../../demonstrative_applications/case_demo_01/clusters_k200/labels.csv
+  labels_sha256: 1bfe170070dc5bad278fb718f78f13c3191493de8fe03c6aca49b8cc83aac535
+  similarity_schema: ../../demonstrative_applications/case_demo_01/similarity/similarity_schema.yaml
+  similarity_schema_sha256: a80cc8282477d19abb666d7ad666ff1f6296c78cbf87f800efa285c01b761d79
+constraints:
+  cluster_disjoint_splits: true
+  test_size_target: 0.2
+  val_size_target: 0.1
+  clustering_method: kmeans
+  n_clusters: 200
+  normalize: true
+artifacts:
+  train_idx: train_idx.npy
+  val_idx: val_idx.npy
+  test_idx: test_idx.npy
+  split_yaml: split.yaml

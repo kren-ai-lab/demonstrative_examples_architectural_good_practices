@@ -1,0 +1,11 @@
+mcs_version: '0.1'
+created_utc: '2026-01-25T21:36:06.716786+00:00'
+case: case_study_02
+embedding_source: Sylphy / ESM2 / mean pooling / last layer
+distance_metric: cosine
+k_neighbors: 10
+normalization: l2
+n_samples: 10000
+artifacts:
+  embeddings: ../../demonstrative_applications/case_demo_01/similarity/embeddings.parquet
+  knn_graph: ../../demonstrative_applications/case_demo_01/similarity/knn_graph.parquet

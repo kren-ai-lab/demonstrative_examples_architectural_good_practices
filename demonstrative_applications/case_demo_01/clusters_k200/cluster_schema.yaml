@@ -1,0 +1,12 @@
+mcs_version: '0.1'
+created_utc: '2026-01-25T21:50:34.265385+00:00'
+method: kmeans
+params:
+  n_clusters: 200
+  normalize: true
+n_samples: 10000
+n_clusters: 200
+artifacts:
+  labels: ../../demonstrative_applications/case_demo_01/clusters_k200/labels.csv
+  embeddings: ../../demonstrative_applications/case_demo_01/similarity/embeddings.parquet
+  similarity_schema: ../../demonstrative_applications/case_demo_01/similarity/similarity_schema.yaml
