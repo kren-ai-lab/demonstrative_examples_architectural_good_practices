@@ -1,29 +1,31 @@
-# **Minimal Community Standard (MCS)**
+# Minimal Community Standard (MCS)
 
-*A lightweight, verifiable standard for reproducible machine learning workflows in protein science*
+*A working prototype for describing reproducible machine learning workflows in protein science*
+
+> **Project status**
+>
+> MCS is an early-stage, research-oriented implementation of a lightweight workflow-record system. It is being developed to explore how architectural good practices for reproducible benchmarking can be operationalized in protein machine learning. At this stage, MCS should be understood as a draft coordination layer, not as a finalized community standard, mandatory framework, or replacement for existing tools.
 
 ---
 
 ## Motivation
 
-Machine learning workflows in protein science often suffer from **implicit assumptions**, **undocumented preprocessing**, **non-deterministic execution**, and **irreproducible data splits**.
-While model architectures are extensively benchmarked, the *infrastructure that connects data, representations, training, and execution* is rarely externalized in a verifiable manner.
+Machine learning workflows in protein science often depend on **implicit assumptions**, **undocumented preprocessing**, **non-deterministic execution**, and **poorly documented data splits**. While model architectures are extensively benchmarked, the infrastructure that connects data, representations, training, execution, and evaluation is often not externalized in a verifiable manner.
 
-**MCS (Minimal Community Standard)** addresses this gap by providing a **minimal, tool-agnostic specification layer** that makes ML workflows:
+MCS explores this gap by providing a **minimal, tool-agnostic specification layer** for recording the workflow decisions that shape machine learning results. The goal is to make protein ML workflows easier to:
 
-* **auditable**
-* **comparable**
-* **reproducible**
-* **portable across labs**
+* audit
+* compare
+* reproduce
+* reuse across laboratories
 
-MCS is **not** a pipeline, framework, or benchmark.
-It is a **standardized description layer** that externalizes the *decisions that matter*.
+MCS is **not** a pipeline, benchmark, model zoo, or training framework. It is a lightweight description layer for making workflow-defining assumptions explicit.
 
 ---
 
 ## Core idea
 
-An ML run is fully determined by **five declarative specifications**:
+An ML run can be described through five declarative specifications:
 
 | Spec            | Purpose                                               |
 | --------------- | ----------------------------------------------------- |
@@ -33,11 +35,13 @@ An ML run is fully determined by **five declarative specifications**:
 | `TrainSpec`     | What learning task is performed and how               |
 | `ExecutionSpec` | Where and under which environment the run is executed |
 
-From these specs, MCS generates:
+From these specs, the current MCS prototype generates:
 
-* a **deterministic `run_id`**
-* a **provenance record**
-* a **local registry of specs and runs**
+* a deterministic `run_id`
+* a provenance record
+* a local registry of specs and runs
+
+These components are intended to support traceability across datasets, representations, splits, models, execution environments, and evaluation outputs.
 
 ---
 
@@ -47,19 +51,19 @@ From these specs, MCS generates:
 git clone https://github.com/kren-ai-lab/MinimalCommunityStandar_v0.1.git
 cd MinimalCommunityStandar_v0.1
 pip install -e ".[dev]"
-```
+````
 
 Requirements:
 
 * Python ≥ 3.12
 * `pydantic`, `pyyaml`
-* `pytest` (for tests)
+* `pytest` for tests
 
 ---
 
-## Quickstart (Golden Path)
+## Quickstart
 
-The **entire MCS workflow** can be executed in a few lines:
+A basic MCS workflow can be executed with:
 
 ```python
 import mcs
@@ -85,8 +89,8 @@ print("Registry path:", out["registry_paths"]["run"])
 
 This will:
 
-1. Load the five YAML specs
-2. Validate them (schema + semantic + cross-spec consistency)
+1. Load the five YAML specifications
+2. Validate them using schema, semantic, and cross-spec checks
 3. Generate a deterministic `run_id`
 4. Store specs and run metadata in a local registry
 
@@ -110,53 +114,56 @@ After running MCS, a local registry is created:
     └── <run_id>/...
 ```
 
-This structure enables:
+This structure supports:
 
 * run-level auditability
 * comparison across experiments
-* provenance-aware artifact tracking
+* provenance-aware artefact tracking
 
 ---
 
 ## Validation philosophy
 
-MCS validation operates at **three levels**:
+MCS validation currently operates at three levels.
 
-1. **Schema validation**
-   Enforced via `pydantic` (types, required fields)
+### 1. Schema validation
 
-2. **Semantic validation**
-   Example:
+Basic structural validation is enforced through `pydantic`, including types and required fields.
 
-   * supervised task requires labels
-   * stratified split requires a valid field
-   * CUDA execution without GPU is flagged
+### 2. Semantic validation
 
-3. **Cross-spec consistency**
-   Example:
+Examples include:
 
-   * embedding linked to a different dataset fingerprint
-   * training split mismatch
-   * missing leakage controls
+* supervised tasks require labels
+* stratified splits require a valid stratification field
+* CUDA execution without GPU availability is flagged
+
+### 3. Cross-spec consistency
+
+Examples include:
+
+* embedding records linked to a different dataset fingerprint
+* training split mismatch
+* missing leakage-control metadata
 
 Validation issues are classified as:
 
-* `ERROR` → invalid configuration
-* `WARNING` → potentially unsafe
-* `INFO` → recommended improvements
+* `ERROR` for invalid configurations
+* `WARNING` for potentially unsafe configurations
+* `INFO` for recommended improvements
 
 ---
 
-## Provenance & lineage
+## Provenance and lineage
 
-Each run produces a **ProvenanceRecord** that links:
+Each run produces a `ProvenanceRecord` linking:
 
 * spec fingerprints
 * execution context
-* produced artifacts
+* produced artefacts
 * summary metrics
 
-Optionally, a **lineage graph** can be generated to visualize dependencies between specs, runs, and artifacts.
+Optionally, a lineage graph can be generated to visualize dependencies between specs, runs, and artefacts.
 
 ---
 
@@ -164,7 +171,7 @@ Optionally, a **lineage graph** can be generated to visualize dependencies betwe
 
 ```text
 mcs/
-├── api.py              # High-level facade (run_pack)
+├── api.py              # High-level facade: run_pack
 ├── schemas/            # Dataset/Split/Embedding/Train/Execution specs
 ├── validation/         # Semantic and cross-spec validators
 ├── provenance/         # Run records and lineage
@@ -196,38 +203,45 @@ The test suite verifies:
 
 * public API imports
 * example YAML validity
-* registry creation via `run_pack`
+* registry creation through `run_pack`
 
 ---
 
-## What MCS is **not**
+## What MCS is not
 
-* Not a training framework
-* Not a benchmark
-* Not a model zoo
-* Not opinionated about ML libraries
+At this stage, MCS is not:
 
-MCS is **pure infrastructure**.
+* a finalized community standard
+* a training framework
+* a benchmark
+* a model zoo
+* an execution engine
+* a replacement for workflow systems such as Nextflow, Snakemake, or CWL
+* opinionated about machine learning libraries
+
+MCS is currently a lightweight research prototype for recording workflow assumptions and supporting reproducible benchmarking experiments.
 
 ---
 
 ## Citation
 
-If you use MCS in academic work, please cite the associated manuscript:
+If you use this prototype in academic work, please cite the associated manuscript when available:
 
-> *Infrastructure, Not Just Models: Towards Verifiable and Scalable Machine Learning for Protein Engineering*
-> *(under submission)*
+> *Architectural Good Practices for Reproducible Benchmarking in Protein Machine Learning*
+> under submission
 
 ---
 
 ## Contributing
 
-Contributions are welcome, particularly:
+Contributions are welcome, especially those related to:
 
 * additional validators
-* new split or leakage patterns
+* split and leakage-control patterns
 * registry backends
-* interoperability tools
+* interoperability with workflow engines
+* provenance visualization
+* documentation and examples
 
 Please open an issue or pull request.
 
@@ -238,3 +252,4 @@ Please open an issue or pull request.
 **KrenAI Lab**
 Universidad de Magallanes, Chile
 [krenai@umag.cl](mailto:krenai@umag.cl)
+
