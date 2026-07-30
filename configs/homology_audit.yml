@@ -1,0 +1,61 @@
+input:
+  encoding: utf-8
+  separator: ","
+
+  task_dataset: data/processed/amp_task.csv
+  homology_root: data/homology
+
+dataset:
+  task_column: task_id
+  sequence_id_column: sequence_id
+  sequence_column: sequence
+  label_column: amp_label
+
+  included_tasks:
+    - amp_vs_toxic_without_amp_evidence
+    - amp_vs_without_amp_evidence
+
+  included_configurations:
+    - H90
+    - H70
+    - H50
+    - H30
+
+split_audit:
+  proportions:
+    train: 0.70
+    validation: 0.15
+    test: 0.15
+
+  number_of_seeds: 20
+  first_seed: 0
+
+  attempts_per_seed: 50
+
+  objective_weights:
+    total_size: 1.0
+    positive_count: 1.0
+    negative_count: 1.0
+
+  overflow_penalty: 2.0
+
+feasibility:
+  maximum_split_size_deviation: 0.10
+
+  maximum_prevalence_deviation: 0.05
+
+  minimum_sequences_per_split: 30
+  minimum_positive_sequences_per_split: 10
+  minimum_negative_sequences_per_split: 10
+
+  maximum_largest_cluster_fraction: 0.20
+
+  minimum_feasibility_rate: 0.80
+
+output:
+  audit_summary: results/summaries/homology_audit_summary.csv
+  feasibility_runs: results/summaries/homology_split_feasibility.csv
+  candidate_root: results/homology_audit/candidate_splits
+  manifest: metadata/homology_audit_manifest.json
+
+  write_best_candidate_assignments: true
