@@ -1,0 +1,44 @@
+input:
+  encoding: utf-8
+  separator: ","
+
+dataset:
+  sequence_column: sequence
+  sequence_id_column: sequence_id
+  sequence_length_column: sequence_length
+  valid_flag_column: sequence_is_valid
+
+  raw_row_id_column: null
+
+  antimicrobial_column: Antimicrobial
+
+  toxicity_columns:
+    - Toxic
+
+  require_valid_sequences: true
+  require_unique_sequence_ids: true
+
+labels:
+  antimicrobial_positive_value: 1
+  antimicrobial_negative_value: 0
+  toxicity_positive_value: 1
+
+  missing_values:
+    - ""
+    - NA
+    - NaN
+    - null
+    - None
+
+tasks:
+  amp_vs_toxic_without_amp_evidence:
+    enabled: true
+    negative_mode: toxic_without_amp_evidence
+    positive_definition: antimicrobial_activity_reported
+    negative_definition: toxic_peptide_without_antimicrobial_evidence
+
+  amp_vs_without_amp_evidence:
+    enabled: true
+    negative_mode: all_without_amp_evidence
+    positive_definition: antimicrobial_activity_reported
+    negative_definition: peptide_without_antimicrobial_evidence
