@@ -1,0 +1,48 @@
+input:
+  encoding: utf-8
+  separator: ","
+
+dataset:
+  task_column: task_id
+  sequence_id_column: sequence_id
+  sequence_column: sequence
+  label_column: amp_label
+  length_column: sequence_length
+
+  included_tasks:
+    - amp_vs_toxic_without_amp_evidence
+    - amp_vs_without_amp_evidence
+
+  class_names:
+    0: background_negative
+    1: amp_positive
+
+  verify_reported_length: true
+
+modlamp:
+
+  expected_version: "4.3.2"
+  enforce_version: true
+
+  batch_size: 5000
+
+  charge:
+    ph: 7.0
+    amide: false
+
+  hydrophobicity:
+
+    scale: eisenberg
+    window: 1000
+    modality: max
+
+  hydrophobic_ratio:
+    enabled: true
+
+  charged_residue_proportion:
+
+    scale: charge_phys
+    threshold: 0.0
+
+  amino_acid_composition:
+    scale: relative
