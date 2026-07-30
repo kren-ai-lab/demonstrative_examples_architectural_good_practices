@@ -28,77 +28,475 @@ No agregaremos más datasets, tasks ni benchmarks externos.
 
 # Roadmap completo desde el único CSV pivote
 
-# Fase 3. Caracterización de los sesgos del dataset
+# Nueva Fase 4. Agrupamiento homology-aware específico por tarea
 
-Antes del modelado debemos estudiar diferencias entre positivos y negativos en:
+## Objetivo
 
-* longitud;
-* composición aminoacídica;
-* carga neta aproximada;
-* hidrofobicidad;
-* proporción de residuos cargados;
-* proporción de residuos hidrofóbicos.
+Para cada task:
 
-Esto no implica agregar un nuevo caso de estudio. Es la caracterización necesaria para demostrar que entendemos las propiedades del dataset y la potencial facilidad del problema.
+1. tomar todas sus secuencias positivas y negativas;
+2. agruparlas conjuntamente mediante MMseqs2;
+3. conservar todas las secuencias;
+4. utilizar los grupos como unidades indivisibles durante la partición;
+5. impedir que secuencias relacionadas bajo la configuración definida aparezcan en particiones diferentes.
 
-Outputs:
+Por tanto, **no hacemos redundancy reduction en el análisis principal**. Hacemos:
 
-```text
-results/summaries/class_distribution.csv
-results/summaries/length_summary.csv
-results/summaries/physicochemical_summary.csv
-```
+> redundancy and homology control through group-constrained partitioning.
 
-En el main text bastará una tabla compacta. Las distribuciones completas pueden quedar en Supplementary Material.
+Esto conserva el tamaño del dataset y evita introducir el efecto adicional de escoger representantes.
 
 ---
 
-# Fase 4. Control de duplicación y redundancia con BioSieve
+# 1. El agrupamiento debe hacerse independientemente por task
 
-Aquí conviene separar dos problemas que antes estaban mezclados.
+Tenemos dos universos experimentales diferentes:
 
-## 4.1. Duplicados exactos
+## Task 1
 
-Las secuencias idénticas deben consolidarse antes de particionar.
+```text
+amp_vs_toxic_without_amp_evidence
+```
 
-Reglas:
+Contiene:
 
-* misma secuencia y misma etiqueta: conservar una instancia;
-* misma secuencia con etiquetas incompatibles: marcar conflicto;
-* no resolver conflictos mediante mayoría automáticamente;
-* excluir o analizar separadamente los conflictos, documentando la decisión.
+* AMP positivos;
+* péptidos tóxicos sin evidencia AMP.
 
-## 4.2. Redundancia por similitud
+## Task 2
 
-BioSieve debe convertirse en la fuente oficial de:
+```text
+amp_vs_without_amp_evidence
+```
 
-* similitud o distancia;
-* agrupaciones;
-* componentes relacionados;
-* validación posterior de los splits.
+Contiene:
 
-Para cada ejecución debemos registrar:
+* AMP positivos;
+* todos los péptidos sin evidencia AMP.
 
-* algoritmo;
-* versión;
-* parámetros;
-* tipo de alineamiento o distancia;
-* identidad mínima;
-* cobertura mínima;
-* tratamiento de secuencias de distinta longitud;
-* criterio para formar grupos.
+Cada task debe generar su propio FASTA y su propio agrupamiento:
 
-## 4.3. No confundir redundancia con eliminación
+```text
+amp_task.csv
+├── task 1 → FASTA → MMseqs2 clusters
+└── task 2 → FASTA → MMseqs2 clusters
+```
 
-No necesariamente tenemos que eliminar todas las secuencias similares.
+Esto significa que una secuencia AMP presente en ambos tasks puede pertenecer a grupos diferentes, porque el conjunto de secuencias con las que se compara también cambia. **Eso es correcto:** el agrupamiento forma parte de la definición específica de cada benchmark.
 
-La estrategia principal puede ser:
+No reutilizaría los clusters del task amplio para el task tóxico.
 
-> conservar las secuencias, pero impedir que grupos altamente similares aparezcan en particiones distintas.
+---
 
-Esto preserva más información y evita que el procedimiento de selección de representantes introduzca un sesgo adicional.
+# 2. Positivos y negativos se agrupan juntos
 
-Podemos construir una vista redundancia-reducida como análisis secundario, pero no debería convertirse automáticamente en la única versión del dataset.
+Esto es crucial.
+
+No debemos ejecutar:
+
+```text
+positives → clusters
+negatives → clusters
+```
+
+Debemos ejecutar:
+
+```text
+positives + negatives → clusters
+```
+
+La etiqueta no participa en MMseqs2. Solo se incorpora después para caracterizar los grupos.
+
+Si una secuencia AMP y una secuencia del background son suficientemente similares:
+
+* deben pertenecer al mismo grupo;
+* deben quedar en la misma partición;
+* no deben eliminarse automáticamente;
+* el grupo debe marcarse como `mixed-label`.
+
+Separar el clustering por clase permitiría que secuencias similares con etiquetas opuestas quedaran en train y test, justamente lo que queremos evitar.
+
+---
+
+# 3. Definición operacional de “homology-aware”
+
+En el código podremos usar:
+
+```text
+homology_aware
+```
+
+pero en Methods debemos definirlo cuidadosamente:
+
+> Homology-aware groups were operationally defined as MMseqs2 sequence-similarity connected components satisfying predefined sequence-identity and bidirectional-coverage criteria.
+
+Así dejamos claro que:
+
+* utilizamos similitud de secuencia como proxy operacional;
+* no afirmamos homología evolutiva demostrada;
+* la definición es completamente reproducible.
+
+MMseqs2 permite controlar explícitamente identidad mínima y cobertura, y `alignment-mode 3` calcula identidad como residuos idénticos divididos por las columnas alineadas, incluyendo gaps internos. Además, `cluster-mode 1` corresponde al agrupamiento por componentes conectados. ([GitHub][1])
+
+---
+
+# 4. Estrategias experimentales
+
+No trabajaría con seis umbrales. La matriz debe mantenerse manejable.
+
+## Baseline
+
+### `random_stratified`
+
+* no utiliza grupos de homología;
+* mantiene aproximadamente la prevalencia;
+* representa el escenario convencional.
+
+## Homology-aware principal
+
+### `H90`
+
+```text
+minimum sequence identity: 0.90
+minimum coverage: 0.90
+```
+
+Interpretación:
+
+> control de secuencias altamente similares y redundancia cercana.
+
+## Homology-aware estricto
+
+### `H70`
+
+```text
+minimum sequence identity: 0.70
+minimum coverage: 0.90
+```
+
+Interpretación:
+
+> control más estricto de generalización entre regiones relacionadas del espacio de secuencias.
+
+La matriz principal quedaría así:
+
+| Task                      | Random | H90 | H70 |
+| ------------------------- | -----: | --: | --: |
+| AMP vs toxic background   |      ✓ |   ✓ |   ✓ |
+| AMP vs general background |      ✓ |   ✓ |   ✓ |
+
+Son **seis condiciones conceptuales**, pero solo cuatro ejecuciones de MMseqs2:
+
+```text
+2 tasks × 2 thresholds = 4 clusterings
+```
+
+El split random no necesita clustering.
+
+MMseqs2 y Linclust se han utilizado con umbrales de identidad de 90%, 70% y 50%, pero esos valores son criterios operacionales de agrupamiento y no deben interpretarse automáticamente como límites universales de familia o fold. ([Nature][2])
+
+## H50
+
+No lo incluiría inicialmente en la matriz principal.
+
+Podemos ejecutarlo únicamente durante la auditoría para responder:
+
+* ¿se forman componentes gigantes?
+* ¿sigue siendo posible construir train/validation/test?
+* ¿la interpretación continúa siendo razonable en péptidos cortos?
+
+Solo entraría al experimento si agrega información clara. **Mi diseño principal sería Random + H90 + H70.**
+
+---
+
+# 5. Configuración MMseqs2 propuesta
+
+Usaría `easy-cluster`, no `easy-linclust`, porque el tamaño del dataset es manejable y preferimos priorizar sensibilidad y una ejecución estándar.
+
+## Parámetros fijos
+
+```yaml
+mmseqs:
+  workflow: easy-cluster
+  cluster_mode: 1
+  alignment_mode: 3
+  coverage_mode: 0
+  minimum_coverage: 0.90
+
+  configurations:
+    H90:
+      minimum_sequence_identity: 0.90
+
+    H70:
+      minimum_sequence_identity: 0.70
+```
+
+### Justificación
+
+#### `cluster_mode: 1`
+
+Componentes conectados.
+
+Si:
+
+```text
+A ~ B
+B ~ C
+```
+
+las tres secuencias quedan en el mismo componente, aunque `A` y `C` no superen directamente el umbral.
+
+Para leakage control esto es conveniente: ninguna relación directa que supere los criterios puede cruzar entre train, validation y test. MMseqs2 identifica `cluster-mode 1` como connected-component clustering. ([GitHub][1])
+
+#### `alignment_mode: 3`
+
+Obliga a MMseqs2 a calcular explícitamente la identidad del alineamiento, en vez de depender de la aproximación basada en score que puede utilizar por defecto. ([GitHub][1])
+
+#### `coverage_mode: 0`
+
+Exige cobertura respecto de la secuencia más larga. Esto actúa como un criterio bidireccional conservador y evita agrupar secuencias solamente porque comparten un motivo local corto. La cobertura en MMseqs2 depende explícitamente de `-c` y `--cov-mode`; en modo 0 se normaliza usando la longitud máxima entre las secuencias comparadas. ([Nature][2])
+
+#### `minimum_coverage: 0.90`
+
+Para péptidos cortos prefiero 90% en vez de 80%. Así, la similitud debe cubrir casi toda la secuencia y no solamente un fragmento.
+
+---
+
+# 6. Punto que debemos validar antes de congelar el config
+
+## E-value en péptidos cortos
+
+MMseqs2 también aplica un criterio de E-value además de identidad y cobertura. ([Nature][2])
+
+En péptidos cortos, un E-value restrictivo podría eliminar alineamientos que cumplen identidad y cobertura, simplemente por la longitud reducida. Por eso, antes de congelar la configuración debemos realizar una **sanity check**, no un nuevo experimento:
+
+1. seleccionar pares idénticos o casi idénticos conocidos;
+2. ejecutar la configuración;
+3. confirmar que MMseqs2 los conecta;
+4. comparar el E-value predeterminado con uno permisivo;
+5. fijar un único valor antes del modelado.
+
+La decisión no debe depender del AUPRC, sino de que el agrupamiento recupere correctamente relaciones que cumplen los criterios declarados.
+
+---
+
+# 7. Responsabilidades de BioSieve
+
+BioSieve será el orquestador oficial. Debe:
+
+1. leer `amp_task.csv`;
+2. seleccionar un `task_id`;
+3. verificar unicidad de `sequence_id`;
+4. exportar el FASTA;
+5. ejecutar MMseqs2;
+6. capturar versión y comando;
+7. convertir el TSV de MMseqs2 a una tabla estable;
+8. agregar etiquetas solamente después del clustering;
+9. calcular estadísticas de los grupos;
+10. generar hashes y manifest.
+
+La lógica del agrupamiento debe ser independiente de las etiquetas.
+
+---
+
+# 8. Outputs por task y configuración
+
+```text
+data/homology/
+├── amp_vs_toxic_without_amp_evidence/
+│   ├── H90/
+│   │   ├── sequences.fasta
+│   │   ├── mmseqs_clusters.tsv
+│   │   ├── cluster_membership.csv
+│   │   ├── cluster_summary.csv
+│   │   ├── mmseqs.log
+│   │   └── manifest.json
+│   └── H70/
+│       └── ...
+└── amp_vs_without_amp_evidence/
+    ├── H90/
+    │   └── ...
+    └── H70/
+        └── ...
+```
+
+---
+
+# 9. Tabla de membresía
+
+## `cluster_membership.csv`
+
+Una fila por secuencia:
+
+```text
+task_id
+homology_config_id
+sequence_id
+cluster_id
+representative_sequence_id
+amp_label
+cluster_size
+cluster_positive_count
+cluster_negative_count
+mixed_label_cluster
+```
+
+Ejemplo:
+
+```csv
+task_id,homology_config_id,sequence_id,cluster_id,representative_sequence_id,amp_label,cluster_size,cluster_positive_count,cluster_negative_count,mixed_label_cluster
+amp_vs_toxic_without_amp_evidence,H90,seq_001,H90_C000001,seq_001,1,4,3,1,1
+amp_vs_toxic_without_amp_evidence,H90,seq_002,H90_C000001,seq_001,0,4,3,1,1
+```
+
+El `cluster_id` debe generarse en nuestro pipeline, no depender directamente del orden arbitrario entregado por MMseqs2. Por ejemplo:
+
+```text
+cluster_id = SHA256(
+    task_id
+    + homology_config_id
+    + sorted(member_sequence_ids)
+)
+```
+
+Podemos usar un prefijo corto para los CSV y conservar el hash completo en el manifest.
+
+---
+
+# 10. Resumen de agrupamiento
+
+## `cluster_summary.csv`
+
+Una fila por grupo:
+
+```text
+task_id
+homology_config_id
+cluster_id
+representative_sequence_id
+cluster_size
+positive_count
+negative_count
+positive_fraction
+mixed_label_cluster
+minimum_length
+maximum_length
+```
+
+También debemos generar un resumen global:
+
+| Métrica                       | Descripción                 |
+| ----------------------------- | --------------------------- |
+| Número de secuencias          | Total del task              |
+| Número de clusters            | Componentes generados       |
+| Singletons                    | Grupos de una secuencia     |
+| Cluster máximo                | Mayor componente            |
+| Mediana de tamaño             | Distribución de redundancia |
+| Clusters mixtos               | Contienen ambas etiquetas   |
+| Secuencias en clusters mixtos | Potencial ambigüedad        |
+| Compression ratio             | clusters / sequences        |
+
+Los mixed-label clusters no representan necesariamente errores. Pueden reflejar:
+
+* anotaciones incompletas;
+* backgrounds sin evidencia AMP;
+* secuencias similares con actividad diferente;
+* dependencia contextual de la actividad;
+* ruido o contradicciones entre fuentes.
+
+Los conservamos y los mantenemos íntegros durante la partición.
+
+---
+
+# 11. Reglas de integridad
+
+Cada ejecución debe comprobar:
+
+* todas las secuencias del task aparecen en el FASTA;
+* cada `sequence_id` aparece una sola vez;
+* todas las secuencias reciben exactamente un cluster;
+* ningún cluster contiene IDs inexistentes;
+* ningún ID pertenece a más de un cluster;
+* el número de miembros coincide con el task;
+* las etiquetas no fueron utilizadas para construir clusters;
+* los resultados son idénticos al repetir la ejecución con la misma versión y configuración.
+
+---
+
+# 12. Relación con la partición
+
+MMseqs2 no construirá directamente train, validation y test. Solo generará los grupos.
+
+Posteriormente:
+
+```text
+H90 clusters → atomic groups → train / validation / test
+H70 clusters → atomic groups → train / validation / test
+```
+
+El seed afectará la asignación de grupos, pero **no el agrupamiento MMseqs2**.
+
+Por tanto:
+
+```text
+Cada task/configuración se clusteriza una vez.
+Cada agrupamiento puede generar 20 splits mediante diferentes seeds.
+```
+
+Los grupos nunca se dividen.
+
+---
+
+# 13. Criterios de factibilidad antes del modelado
+
+Antes de aceptar H90 o H70 debemos comprobar:
+
+* que no exista un componente que concentre una fracción excesiva del dataset;
+* que sea posible generar train, validation y test;
+* que ambas clases aparezcan en las tres particiones;
+* que el tamaño del test sea suficiente;
+* que la prevalencia pueda mantenerse razonablemente;
+* que el agrupamiento no elimine indirectamente una clase de alguna partición.
+
+Si H70 produce un componente gigante, no cambiaremos parámetros mirando performance. Documentaremos el problema y decidiremos entre:
+
+* mantener H70 con proporciones de split adaptadas;
+* usar un umbral intermedio, como H80;
+* excluir H70 del experimento principal.
+
+La decisión se toma mirando **estructura y factibilidad**, nunca resultados predictivos.
+
+---
+
+# Diseño final recomendado
+
+## Experimento principal
+
+```text
+Task 1:
+    random_stratified
+    homology_aware_H90
+    homology_aware_H70
+
+Task 2:
+    random_stratified
+    homology_aware_H90
+    homology_aware_H70
+```
+
+## Lo que no agregamos
+
+* distance-aware con Sylphy;
+* clustering separado por clase;
+* representative-only datasets;
+* combinaciones de identity × coverage;
+* muchos algoritmos de clustering;
+* umbrales interpretados como family-level o fold-level;
+* eliminación automática de grupos mixtos.
+
+Esto responde directamente a la solicitud de los revisores de declarar algoritmo, métrica, secuencias utilizadas, balance, significado de los parámetros y régimen de generalización, sin convertir el caso de estudio en una matriz inmanejable. 
+
+**Mi recomendación final:** avanzar con `Random + H90 + H70`, cobertura bidireccional fija de 90%, componentes conectados y clustering independiente para cada task. Antes de implementar el script, solo debemos validar el comportamiento del E-value con los péptidos cortos.
 
 ---
 

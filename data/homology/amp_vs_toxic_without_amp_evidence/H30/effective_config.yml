@@ -1,0 +1,18 @@
+task_id: amp_vs_toxic_without_amp_evidence
+homology_config_id: H30
+minimum_sequence_identity: 0.3
+mmseqs:
+  binary: mmseqs
+  threads: 16
+  cluster_mode: 1
+  alignment_mode: 3
+  coverage_mode: 0
+  minimum_coverage: 0.9
+  e_value: 0.001
+  sensitivity: 7.5
+  max_sequences: 1000
+  split_memory_limit: null
+  extra_args: []
+configuration_overrides:
+  enabled: true
+  minimum_sequence_identity: 0.3

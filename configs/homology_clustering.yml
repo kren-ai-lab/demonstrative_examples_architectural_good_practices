@@ -1,0 +1,62 @@
+input:
+  encoding: utf-8
+  separator: ","
+
+dataset:
+  task_column: task_id
+  sequence_id_column: sequence_id
+  sequence_column: sequence
+  label_column: amp_label
+  length_column: sequence_length
+
+  included_tasks:
+    - amp_vs_toxic_without_amp_evidence
+    - amp_vs_without_amp_evidence
+
+  alphabet: "ACDEFGHIKLMNPQRSTVWY"
+  verify_reported_length: true
+
+mmseqs:
+  binary: mmseqs
+
+  threads: 16
+
+  cluster_mode: 1
+
+  alignment_mode: 3
+
+  coverage_mode: 0
+  minimum_coverage: 0.90
+
+  e_value: 0.001
+
+  sensitivity: 7.5
+
+  max_sequences: 1000
+
+  split_memory_limit: null
+
+  extra_args: []
+
+configurations:
+  H90:
+    enabled: true
+    minimum_sequence_identity: 0.90
+
+  H70:
+    enabled: true
+    minimum_sequence_identity: 0.70
+
+  H50:
+    enabled: true
+    minimum_sequence_identity: 0.50
+
+  H30:
+    enabled: true
+    minimum_sequence_identity: 0.30
+
+output:
+  cluster_hash_prefix_length: 16
+
+  keep_mmseqs_databases: false
+  keep_temporary_directory: false

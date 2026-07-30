@@ -1,0 +1,12 @@
+{
+  "compression_ratio_clusters_per_sequence": 0.5710535749390011,
+  "largest_cluster_size": 619,
+  "mean_cluster_size": 1.75114918089221,
+  "median_cluster_size": 1.0,
+  "number_of_clusters": 49383,
+  "number_of_mixed_label_clusters": 365,
+  "number_of_sequences": 86477,
+  "number_of_singletons": 41032,
+  "sequences_in_mixed_label_clusters": 5790,
+  "singleton_fraction": 0.8308932223639715
+}

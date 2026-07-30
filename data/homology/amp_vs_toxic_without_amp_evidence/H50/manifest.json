@@ -1,0 +1,98 @@
+{
+  "clustering_summary": {
+    "compression_ratio_clusters_per_sequence": 0.4492279420004034,
+    "largest_cluster_size": 615,
+    "mean_cluster_size": 2.226041406834622,
+    "median_cluster_size": 1.0,
+    "number_of_clusters": 20045,
+    "number_of_mixed_label_clusters": 77,
+    "number_of_sequences": 44621,
+    "number_of_singletons": 15415,
+    "sequences_in_mixed_label_clusters": 1625,
+    "singleton_fraction": 0.76901970566226
+  },
+  "commands": [
+    {
+      "command": "/raid/data/dmedina/miniforge3/envs/architectural_decision_example/bin/mmseqs createdb data/homology/amp_vs_toxic_without_amp_evidence/H50/sequences.fasta data/homology/amp_vs_toxic_without_amp_evidence/H50/mmseqs_db/sequence_db",
+      "elapsed_seconds": 9.263328483968507,
+      "return_code": 0
+    },
+    {
+      "command": "/raid/data/dmedina/miniforge3/envs/architectural_decision_example/bin/mmseqs cluster data/homology/amp_vs_toxic_without_amp_evidence/H50/mmseqs_db/sequence_db data/homology/amp_vs_toxic_without_amp_evidence/H50/mmseqs_db/cluster_db data/homology/amp_vs_toxic_without_amp_evidence/H50/tmp --min-seq-id 0.5 -c 0.9 --cov-mode 0 --cluster-mode 1 --alignment-mode 3 --threads 16 -e 0.001 -s 7.5 --max-seqs 1000",
+      "elapsed_seconds": 34.66624091297854,
+      "return_code": 0
+    },
+    {
+      "command": "/raid/data/dmedina/miniforge3/envs/architectural_decision_example/bin/mmseqs createtsv data/homology/amp_vs_toxic_without_amp_evidence/H50/mmseqs_db/sequence_db data/homology/amp_vs_toxic_without_amp_evidence/H50/mmseqs_db/sequence_db data/homology/amp_vs_toxic_without_amp_evidence/H50/mmseqs_db/cluster_db data/homology/amp_vs_toxic_without_amp_evidence/H50/mmseqs_clusters.tsv",
+      "elapsed_seconds": 4.094078703026753,
+      "return_code": 0
+    }
+  ],
+  "created_at_utc": "2026-07-30T13:35:33.740920+00:00",
+  "homology_config_id": "H50",
+  "input": {
+    "negative_sequences": 10211,
+    "path": "data/processed/amp_task.csv",
+    "positive_sequences": 34410,
+    "sha256": "3914f604a24b4652e89b519e51180b03e8a986c3eabf621f3806db31e8294f4d",
+    "task_rows": 44621
+  },
+  "operational_definition": "MMseqs2 sequence-similarity connected components generated from all positive and background sequences within the task.",
+  "outputs": [
+    {
+      "path": "data/homology/amp_vs_toxic_without_amp_evidence/H50/sequences.fasta",
+      "sha256": "83e4e156771d158d67c50f36cc8b52f6234bc0bd8171c6ab723033d5f2c961b4",
+      "size_bytes": 4594011
+    },
+    {
+      "path": "data/homology/amp_vs_toxic_without_amp_evidence/H50/mmseqs_clusters.tsv",
+      "sha256": "c6d988853cb2d272427e23c8e52cf7c9e7511070eff4113fcddcbeea4e8c212f",
+      "size_bytes": 5800730
+    },
+    {
+      "path": "data/homology/amp_vs_toxic_without_amp_evidence/H50/cluster_membership.csv",
+      "sha256": "ee084f61616fb67731bb6218644d5e44a1196c1a212cf14002dfa5aa0e061ae6",
+      "size_bytes": 9589255
+    },
+    {
+      "path": "data/homology/amp_vs_toxic_without_amp_evidence/H50/cluster_summary.csv",
+      "sha256": "7e53d250feb66b0bac8cd79a16c1933b9e41b689c2efa02cb429e574caa3e777",
+      "size_bytes": 4404201
+    },
+    {
+      "path": "data/homology/amp_vs_toxic_without_amp_evidence/H50/clustering_summary.json",
+      "sha256": "9fa025bfa12f4fcef9a84b1d0700e2d4f1a858c36f96bb80156e0af6b3e88e53",
+      "size_bytes": 394
+    },
+    {
+      "path": "data/homology/amp_vs_toxic_without_amp_evidence/H50/effective_config.yml",
+      "sha256": "613c0fa2df7544c9beb9524577068d4012526c10e1154ec94d5ef5af1a37e909",
+      "size_bytes": 394
+    },
+    {
+      "path": "data/homology/amp_vs_toxic_without_amp_evidence/H50/mmseqs.log",
+      "sha256": "d6d2aab7c7241c9801390bbbcc8d15dde4b90a8d916c9c638bc21da51240c15b",
+      "size_bytes": 34226
+    }
+  ],
+  "parameters": {
+    "alignment_mode": 3,
+    "cluster_mode": 1,
+    "coverage_mode": 0,
+    "e_value": 0.001,
+    "extra_args": [],
+    "max_sequences": 1000,
+    "minimum_coverage": 0.9,
+    "minimum_sequence_identity": 0.5,
+    "sensitivity": 7.5,
+    "threads": 16
+  },
+  "schema_version": "1.0",
+  "software": {
+    "mmseqs_binary": "/raid/data/dmedina/miniforge3/envs/architectural_decision_example/bin/mmseqs",
+    "mmseqs_version": "18.8cc5c",
+    "platform": "Linux-5.14.21-150500.55.68-default-x86_64-with-glibc2.31",
+    "python_version": "3.11.15 | packaged by conda-forge | (main, Jun 11 2026, 03:34:02) [GCC 14.3.0]"
+  },
+  "task_id": "amp_vs_toxic_without_amp_evidence"
+}
