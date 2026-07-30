@@ -1,0 +1,11 @@
+control,result
+Original rows,86477
+Valid sequences,86477
+Unique sequences,86477
+Exact duplicates,0
+Non-canonical sequences,0
+Empty sequences,0
+Label conflicts,0
+Minimum length,2
+Maximum length,150
+Median length,23

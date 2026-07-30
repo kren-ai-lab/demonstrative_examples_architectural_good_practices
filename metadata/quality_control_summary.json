@@ -1,0 +1,28 @@
+{
+  "input_file": "data/processed/peptide_activity_normalized.csv",
+  "definitions": {
+    "unique_sequences": "Number of distinct non-empty normalized sequences.",
+    "exact_duplicates": "Number of additional rows sharing an identical non-empty normalized sequence.",
+    "noncanonical_sequences": "Number of non-empty sequences containing at least one character outside the configured alphabet.",
+    "label_conflicts": "Number of duplicated normalized sequences associated with more than one label profile.",
+    "length_statistics": "Calculated using valid, non-empty sequences only."
+  },
+  "controls": {
+    "original_rows": 86477,
+    "valid_sequences": 86477,
+    "unique_sequences": 86477,
+    "exact_duplicates": 0,
+    "noncanonical_sequences": 0,
+    "empty_sequences": 0,
+    "label_conflicts": 0,
+    "minimum_length": 2,
+    "maximum_length": 150,
+    "median_length": 23
+  },
+  "label_columns_checked": [
+    "Antimicrobial",
+    "Toxic"
+  ],
+  "encoding": "utf-8",
+  "separator": ","
+}

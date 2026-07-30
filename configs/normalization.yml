@@ -1,0 +1,23 @@
+input:
+  encoding: utf-8
+  separator: ","
+
+dataset:
+  sequence_column: sequence
+  label_columns:
+    - Antimicrobial
+    - Toxic
+    
+normalization:
+  uppercase: true
+  remove_whitespace: true
+  remove_unicode_format_characters: true
+  alphabet: "ACDEFGHIKLMNPQRSTVWY"
+
+output:
+  original_sequence_column: sequence_original
+  sequence_id_column: sequence_id
+  sequence_length_column: sequence_length
+  empty_flag_column: sequence_is_empty
+  valid_flag_column: sequence_is_valid
+  invalid_characters_column: invalid_characters

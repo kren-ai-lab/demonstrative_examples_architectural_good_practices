@@ -1,0 +1,18 @@
+{
+  "input_file": "data/raw/peptide_activity_pivot.csv",
+  "output_file": "data/processed/peptide_activity_normalized.csv",
+  "sequence_column": "sequence",
+  "encoding": "utf-8",
+  "separator": ",",
+  "alphabet": "ACDEFGHIKLMNPQRSTVWY",
+  "normalization": {
+    "uppercase": true,
+    "remove_whitespace": true,
+    "remove_unicode_format_characters": true
+  },
+  "number_of_rows": 86477,
+  "number_of_valid_sequences": 86477,
+  "number_of_invalid_sequences": 0,
+  "number_of_empty_sequences": 0,
+  "invalid_character_counts": {}
+}
