@@ -208,3 +208,6 @@ __marimo__/
 
 # embedding
 embedding**
+
+# partitions
+split_assignment.csv

@@ -47,3 +47,8 @@ python src/run_mmseqs_homology_clustering.py \
 python src/audit_homology_configurations.py \
   --config configs/homology_audit.yml \
   --overwrite
+
+# preparing partitions
+python src/build_partitions.py \
+  --config configs/partitioning.yml \
+  --overwrite

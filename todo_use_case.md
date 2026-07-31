@@ -1,31 +1,3 @@
-# Diseño definitivo del caso de estudio
-
-El objetivo experimental será demostrar que:
-
-> **La definición del dataset, el control de redundancia y el régimen de particionamiento basado en similitud alteran el rendimiento aparente, su variabilidad y la interpretación de la generalización, incluso cuando la representación y los modelos permanecen constantes.**
-
-No agregaremos más datasets, tasks ni benchmarks externos.
-
-## Variables que mantendremos constantes
-
-* un único endpoint, AMP classification;
-* una representación generada con Sylphy;
-* cuatro clasificadores convencionales;
-* un procedimiento fijo de selección de hiperparámetros;
-* las mismas métricas;
-* el mismo esquema general de train/validation/test.
-
-## Variables que estudiaremos
-
-* construcción de la clase negativa;
-* control de duplicados y redundancia;
-* partición estratificada aleatoria;
-* particiones sequence-similarity-aware con diferentes umbrales;
-* variabilidad entre seeds;
-* prevalencia y baseline de AUPRC de cada test set.
-
----
-
 # Roadmap completo desde el único CSV pivote
 
 # Fase 6. Construcción de las particiones
