@@ -206,8 +206,19 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# embedding
-embedding**
+# Generated workflow artifacts
+/data/processed/
+/data/homology/
+/data/partitions/
+/representations/
+/results/
+/metadata/
 
-# partitions
-split_assignment.csv
+# Model and embedding files
+*.joblib
+*.pkl
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*embeddings*.parquet

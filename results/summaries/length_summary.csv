@@ -1,5 +1,0 @@
-task_id,amp_label,class_name,n,minimum,maximum,mean,standard_deviation,median,q1,q3,iqr
-amp_vs_toxic_without_amp_evidence,0,background_negative,10211,3.0,150.0,44.73518754284595,32.4397579959535,34.0,20.0,64.0,44.0
-amp_vs_toxic_without_amp_evidence,1,amp_positive,34410,2.0,150.0,33.233217088055795,28.173861966237467,23.0,14.0,42.0,28.0
-amp_vs_without_amp_evidence,0,background_negative,52067,2.0,150.0,35.98457756352392,33.41205692377195,23.0,13.0,47.0,34.0
-amp_vs_without_amp_evidence,1,amp_positive,34410,2.0,150.0,33.233217088055795,28.173861966237467,23.0,14.0,42.0,28.0

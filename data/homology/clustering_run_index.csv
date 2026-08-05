@@ -1,9 +1,0 @@
-task_id,homology_config_id,number_of_sequences,number_of_clusters,number_of_singletons,singleton_fraction,largest_cluster_size,mean_cluster_size,median_cluster_size,number_of_mixed_label_clusters,sequences_in_mixed_label_clusters,compression_ratio_clusters_per_sequence,manifest
-amp_vs_toxic_without_amp_evidence,H30,44621,19170,14774,0.7706833594157538,615,2.3276473656755345,1.0,81,2050,0.42961834113982206,data/homology/amp_vs_toxic_without_amp_evidence/H30/manifest.json
-amp_vs_toxic_without_amp_evidence,H50,44621,20045,15415,0.76901970566226,615,2.226041406834622,1.0,77,1625,0.4492279420004034,data/homology/amp_vs_toxic_without_amp_evidence/H50/manifest.json
-amp_vs_toxic_without_amp_evidence,H70,44621,22895,17894,0.7815680279537017,243,1.948940816772221,1.0,72,1040,0.5130992133748683,data/homology/amp_vs_toxic_without_amp_evidence/H70/manifest.json
-amp_vs_toxic_without_amp_evidence,H90,44621,29275,24308,0.830333048676345,181,1.5242015371477369,1.0,59,392,0.6560812173640215,data/homology/amp_vs_toxic_without_amp_evidence/H90/manifest.json
-amp_vs_without_amp_evidence,H30,86477,49383,41032,0.8308932223639715,619,1.75114918089221,1.0,365,5790,0.5710535749390011,data/homology/amp_vs_without_amp_evidence/H30/manifest.json
-amp_vs_without_amp_evidence,H50,86477,50617,42042,0.8305905130687319,500,1.708457632811111,1.0,368,5120,0.5853232651456457,data/homology/amp_vs_without_amp_evidence/H50/manifest.json
-amp_vs_without_amp_evidence,H70,86477,55318,46608,0.8425467298166962,301,1.5632705448497777,1.0,314,3365,0.6396845403980249,data/homology/amp_vs_without_amp_evidence/H70/manifest.json
-amp_vs_without_amp_evidence,H90,86477,65459,57709,0.8816052796406911,182,1.3210864816144456,1.0,260,1601,0.756952715751009,data/homology/amp_vs_without_amp_evidence/H90/manifest.json

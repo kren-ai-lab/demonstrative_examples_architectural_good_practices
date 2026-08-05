@@ -1,5 +1,0 @@
-task_id,amp_label,class_name,class_count,total_count,class_fraction
-amp_vs_toxic_without_amp_evidence,0,background_negative,10211,44621,0.22883843929988124
-amp_vs_toxic_without_amp_evidence,1,amp_positive,34410,44621,0.7711615607001188
-amp_vs_without_amp_evidence,0,background_negative,52067,86477,0.602090729326873
-amp_vs_without_amp_evidence,1,amp_positive,34410,86477,0.397909270673127
