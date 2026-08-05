@@ -1,0 +1,227 @@
+input:
+  partition_index: results/summaries/partition_index.csv
+  partition_generation_manifest: metadata/partition_generation_manifest.json
+  embeddings: representations/amp_sylphy_embeddings.parquet
+  representation_manifest: metadata/representation_manifest.json
+dataset:
+  sequence_id_column: sequence_id
+  label_column: amp_label
+  partition_column: partition
+  included_tasks:
+  - amp_vs_toxic_without_amp_evidence
+  - amp_vs_without_amp_evidence
+  included_regimes:
+  - RANDOM
+  - H90
+  - H70
+  - H50
+  - H30
+  expected_partitions:
+  - train
+  - validation
+  - test
+  expected_seeds_per_task_regime: 100
+representation:
+  embedding_column_prefix: embedding_
+  expected_dimension: 320
+  verify_embedding_sha256: true
+  verify_partition_index_sha256: true
+  verify_partition_file_sha256: true
+  verify_shared_task_dataset_sha256: true
+selection:
+  reference_regime: RANDOM
+  metric: average_precision
+  aggregation: median
+  require_complete_reference_grid: true
+training:
+  model_seed: 20260731
+  preserve_fixed_model_seed_across_partitions: true
+  refit_on_train_validation: false
+evaluation:
+  fixed_thresholds:
+    probability: 0.5
+    decision_function: 0.0
+models:
+  knn:
+    enabled: true
+    estimator: knn
+    preprocessing: standard_scaler
+    score_type: probability
+    fixed_parameters:
+      algorithm: brute
+      metric: euclidean
+      n_jobs: -1
+    variants:
+    - id: knn_k03_distance
+      parameters:
+        n_neighbors: 3
+        weights: distance
+    - id: knn_k05_distance
+      parameters:
+        n_neighbors: 5
+        weights: distance
+    - id: knn_k15_distance
+      parameters:
+        n_neighbors: 15
+        weights: distance
+    - id: knn_k31_distance
+      parameters:
+        n_neighbors: 31
+        weights: distance
+    - id: knn_k63_distance
+      parameters:
+        n_neighbors: 63
+        weights: distance
+    - id: knn_k15_uniform
+      parameters:
+        n_neighbors: 15
+        weights: uniform
+  logistic_regression:
+    enabled: true
+    estimator: logistic_regression
+    preprocessing: standard_scaler
+    score_type: probability
+    fixed_parameters:
+      penalty: l2
+      solver: lbfgs
+      fit_intercept: true
+      class_weight: balanced
+      max_iter: 5000
+      tol: 0.0001
+    variants:
+    - id: lr_c0p01_balanced
+      parameters:
+        C: 0.01
+    - id: lr_c0p1_balanced
+      parameters:
+        C: 0.1
+    - id: lr_c1_balanced
+      parameters:
+        C: 1.0
+    - id: lr_c10_balanced
+      parameters:
+        C: 10.0
+    - id: lr_c100_balanced
+      parameters:
+        C: 100.0
+    - id: lr_c1_unweighted
+      parameters:
+        C: 1.0
+        class_weight: null
+  random_forest:
+    enabled: true
+    estimator: random_forest
+    preprocessing: none
+    score_type: probability
+    fixed_parameters:
+      n_estimators: 200
+      criterion: gini
+      max_features: sqrt
+      class_weight: balanced_subsample
+      bootstrap: true
+      n_jobs: -1
+    variants:
+    - id: rf_d10_l1_sqrt_balanced
+      parameters:
+        max_depth: 10
+        min_samples_leaf: 1
+    - id: rf_d20_l1_sqrt_balanced
+      parameters:
+        max_depth: 20
+        min_samples_leaf: 1
+    - id: rf_d40_l1_sqrt_balanced
+      parameters:
+        max_depth: 40
+        min_samples_leaf: 1
+    - id: rf_none_l1_sqrt_balanced
+      parameters:
+        max_depth: null
+        min_samples_leaf: 1
+    - id: rf_d20_l5_sqrt_balanced
+      parameters:
+        max_depth: 20
+        min_samples_leaf: 5
+    - id: rf_d40_l5_sqrt_balanced
+      parameters:
+        max_depth: 40
+        min_samples_leaf: 5
+    - id: rf_none_l5_sqrt_balanced
+      parameters:
+        max_depth: null
+        min_samples_leaf: 5
+    - id: rf_none_l10_sqrt_balanced
+      parameters:
+        max_depth: null
+        min_samples_leaf: 10
+    - id: rf_none_l5_log2_balanced
+      parameters:
+        max_depth: null
+        min_samples_leaf: 5
+        max_features: log2
+    - id: rf_none_l5_mf0p25_balanced
+      parameters:
+        max_depth: null
+        min_samples_leaf: 5
+        max_features: 0.25
+    - id: rf_none_l5_mf0p50_balanced
+      parameters:
+        max_depth: null
+        min_samples_leaf: 5
+        max_features: 0.5
+    - id: rf_none_l5_sqrt_unweighted
+      parameters:
+        max_depth: null
+        min_samples_leaf: 5
+        class_weight: null
+  linear_svm:
+    enabled: true
+    estimator: linear_svm
+    preprocessing: standard_scaler
+    score_type: decision_function
+    calibration: none
+    fixed_parameters:
+      penalty: l2
+      loss: squared_hinge
+      dual: auto
+      fit_intercept: true
+      class_weight: balanced
+      max_iter: 10000
+      tol: 0.0001
+    variants:
+    - id: svm_c0p01_balanced
+      parameters:
+        C: 0.01
+    - id: svm_c0p1_balanced
+      parameters:
+        C: 0.1
+    - id: svm_c1_balanced
+      parameters:
+        C: 1.0
+    - id: svm_c10_balanced
+      parameters:
+        C: 10.0
+    - id: svm_c100_balanced
+      parameters:
+        C: 100.0
+    - id: svm_c1_unweighted
+      parameters:
+        C: 1.0
+        class_weight: null
+execution:
+  resume_existing_runs: true
+  continue_after_run_failure: true
+  reject_convergence_warnings: true
+  write_test_predictions: true
+  parquet_compression: zstd
+software:
+  scikit_learn:
+    expected_version: null
+    enforce_version: false
+output:
+  run_root: results/modeling
+  grid_validation_summary: results/summaries/model_grid_validation.csv
+  grid_ranking_summary: results/summaries/model_grid_ranking.csv
+  selected_variants: results/summaries/selected_model_variants.csv
+  performance_summary: results/summaries/model_performance.csv
+  failure_summary: results/summaries/model_training_failures.csv
+  manifest: metadata/model_training_manifest.json

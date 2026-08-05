@@ -1,0 +1,44 @@
+input:
+  encoding: utf-8
+  separator: ','
+dataset:
+  task_column: task_id
+  sequence_id_column: sequence_id
+  sequence_column: sequence
+  included_tasks:
+  - amp_vs_toxic_without_amp_evidence
+  - amp_vs_without_amp_evidence
+  alphabet: ACDEFGHIKLMNPQRSTVWY
+  verify_sequence_id_sha256: true
+representation:
+  framework: sylphy
+  sylphy:
+    expected_version: 0.2.0
+    enforce_version: true
+    cache_root: null
+  model:
+    repository: facebook/esm2_t6_8M_UR50D
+    registry_name: esm2_t6_8M_UR50D_frozen
+    requested_revision: main
+    resolve_revision_to_commit: true
+    expected_hidden_size: 320
+    expected_num_hidden_layers: 6
+  extraction:
+    layer: last
+    layer_aggregation: mean
+    pooling: mean
+    remove_special_tokens: true
+    precision: fp32
+    device: cuda
+    strict_device: true
+    max_length: 150
+    fail_on_truncation: true
+    batch_size: 256
+    oom_backoff: true
+    seed: 42
+    allow_tf32: false
+output:
+  embeddings: representations/amp_sylphy_embeddings.parquet
+  manifest: metadata/representation_manifest.json
+  compression: zstd
+  embedding_column_prefix: embedding_
