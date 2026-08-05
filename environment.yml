@@ -1,0 +1,26 @@
+name: building_ml_models
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.12.12
+  - pip=26.0.1
+  - mmseqs2=13.45111
+  - ipykernel=7.2.0
+  - pip:
+      - cuda-toolkit==13.0.2
+      - huggingface-hub==0.36.2
+      - ipython==9.12.0
+      - joblib==1.5.3
+      - matplotlib==3.10.8
+      - modlamp==4.3.2
+      - numpy==2.4.4
+      - pandas==3.0.2
+      - pyarrow==23.0.1
+      - pyyaml==6.0.3
+      - scikit-learn==1.8.0
+      - scipy==1.17.1
+      - sylphy==0.2.0
+      - torch==2.11.0
+      - transformers==4.48.1

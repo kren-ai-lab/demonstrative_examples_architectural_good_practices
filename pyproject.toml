@@ -1,0 +1,51 @@
+[project]
+name = "demonstrative-protein-ml-workflow"
+version = "0.1.0"
+description = "A demonstrative, reproducible machine-learning workflow for antimicrobial peptide classification."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+authors = [
+    { name = "KrenAI-Lab", email = "krenai@umag.cl" },
+]
+keywords = [
+    "antimicrobial-peptides",
+    "bioinformatics",
+    "machine-learning",
+    "reproducibility",
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "joblib==1.5.3",
+    "modlamp==4.3.2",
+    "numpy==2.4.4",
+    "pandas==3.0.2",
+    "pyarrow==23.0.1",
+    "PyYAML==6.0.3",
+    "scikit-learn==1.8.0",
+    "scipy==1.17.1",
+]
+
+[project.optional-dependencies]
+embeddings = [
+    "huggingface-hub==0.36.2",
+    "sylphy==0.2.0",
+    "torch==2.11.0",
+    "transformers==4.48.1",
+]
+analysis = [
+    "ipykernel==7.2.0",
+    "ipython==9.12.0",
+    "matplotlib==3.10.8",
+]
+
+[project.urls]
+Repository = "https://github.com/kren-ai-lab/demonstrative_examples_architectural_good_practices"

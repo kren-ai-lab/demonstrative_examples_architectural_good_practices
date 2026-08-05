@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "Demonstrative Protein Machine-Learning Workflow"
+type: software
+version: 0.1.0
+authors:
+  - name: "KrenAI-Lab"
+repository-code: "https://github.com/kren-ai-lab/demonstrative_examples_architectural_good_practices"
+license: GPL-3.0-only
