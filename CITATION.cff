@@ -1,9 +1,50 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it using the metadata below."
-title: "Demonstrative Protein Machine-Learning Workflow"
-type: software
+message: "If you use this architectural good practices, please cite it using the metadata below."
+title: "Architectural Good Practices for Reproducible Benchmarking in Protein Machine Learning"
+type: architectural good practices
+date-released: "2026-08-06"
+license: GPL-3.0-only
 version: 0.1.0
 authors:
-  - name: "KrenAI-Lab"
+  - family-names: García-Vinuesa
+    given-names: Julián
+    affiliation: "Universidad de Magallanes"
+  - family-names: Fernández-Villegas
+    given-names: Diego
+    affiliation: "Universidad de Magallanes" 
+  - family-names: Soto-García
+    given-names: Michelle 
+    affiliation: "Universidad de Magallanes"     
+  - family-names: Cadet
+    given-names: Xavier
+    affiliation: "Dartmouth College" 
+  - family-names: Davari
+    given-names: Mehdi D.
+    affiliation: "Leibniz Institute of Plant Biochemistry" 
+  - family-names: Cadet
+    given-names: Frederic
+    affiliation: "AI for Biologics, PEACCEL" 
+  - family-names: Asenjo
+    given-names: Juan A.
+    affiliation: "Universidad de Chile"   
+  - family-names: Uribe-Paredes
+    given-names: Roberto
+    affiliation: "Universidad de Chile"  
+  - family-names: Medina-Ortiz
+    given-names: David
+    affiliation: "Leibniz Institute of Plant Biochemistry"
 repository-code: "https://github.com/kren-ai-lab/demonstrative_examples_architectural_good_practices"
-license: GPL-3.0-only
+url: "https://github.com/kren-ai-lab/demonstrative_examples_architectural_good_practices"
+keywords:
+  - protein machine learning
+  - reproducible benchmarking
+  - verifiable workflows, computational infrastructure
+  - workflow provenance
+  - FAIR workflows
+  - interoperability
+  - good practices
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21810167
+    description: "Version DOI (v0.1.0)"
+
